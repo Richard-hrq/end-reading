@@ -956,51 +956,55 @@ function switchToCommentsPage() {
       });
     }
 
-    // 加载章节内容
-    async function loadChapter(chapterId) {
-      try {
-        const response = await fetch(`/api/chapter/${chapterId}`);
-        if (!response.ok) {
-          throw new Error('章节不存在');
-        }
-        
-        const data = await response.json();
-        
-        // 更新当前章节状态
-        currentChapterId = data.chapter.id;
-        currentIndex = data.currentIndex;
-        totalChapters = data.totalChapters;
-        
-        // 渲染章节标题和内容
-        document.getElementById('chapter-title').textContent = data.chapter.title;
-        
-        // 处理章节内容
-        const paragraphs = data.chapter.content
-          .split('\n\n')
-          .filter(p => p.trim() !== '')
-          .map(p => `<p>${p.replace(/\n/g, '<br>')}</p>`);
-        
-        document.getElementById('chapter-content').innerHTML = paragraphs.join('');
-        
-        // 更新导航按钮状态
-        document.getElementById('prev-btn').disabled = currentIndex === 0;
-        document.getElementById('next-btn').disabled = currentIndex === totalChapters - 1;
-        
-        // 显示章节进度
-        document.getElementById('chapter-info').textContent = 
-          `第 ${currentIndex + 1} 章 / 共 ${totalChapters} 章`;
-        
-        // 更新目录选中状态
-        updateTocActive();
-        
-        // 更新URL
-        history.pushState(null, '', `?chapter=${currentChapterId}`);
-        window.scrollTo(0, 0);
-      } catch (error) {
-        console.error('加载章节失败:', error);
-        document.getElementById('chapter-content').textContent = '加载章节失败，请尝试其他章节。';
-      }
+    // 替换原有的 loadChapter 函数
+async function loadChapter(chapterId) {
+  try {
+    // 加载 TXT 格式的章节文件
+    const response = await fetch(`./data/chapters/${chapterId}.txt`);
+    
+    if (!response.ok) {
+      throw new Error('章节不存在');
     }
+    
+    // 读取纯文本内容（TXT文件）
+    const chapterContent = await response.text();
+    
+    // 从 allChapters 中获取章节标题（标题仍来自 novels.json）
+    const chapterInfo = allChapters.find(c => c.id === chapterId);
+    if (!chapterInfo) {
+      throw new Error('章节信息未找到');
+    }
+    
+    // 更新当前章节状态
+    currentChapterId = chapterId;
+    currentIndex = allChapters.findIndex(c => c.id === chapterId);
+    totalChapters = allChapters.length;
+    
+    // 渲染章节标题
+    document.getElementById('chapter-title').textContent = chapterInfo.title;
+    
+    // 处理 TXT 内容为 HTML 段落（按空行分割）
+    const paragraphs = chapterContent
+      .split('\n\n')  // 按空行分割段落
+      .filter(p => p.trim() !== '')
+      .map(p => `<p>${p.replace(/\n/g, '<br>')}</p>`);  // 处理段落内换行
+    
+    document.getElementById('chapter-content').innerHTML = paragraphs.join('');
+    
+    // 更新导航按钮状态（保持不变）
+    document.getElementById('prev-btn').disabled = currentIndex === 0;
+    document.getElementById('next-btn').disabled = currentIndex === totalChapters - 1;
+    document.getElementById('chapter-info').textContent = 
+      `第 ${currentIndex + 1} 章 / 共 ${totalChapters} 章`;
+    
+    updateTocActive();
+    history.pushState(null, '', `?chapter=${currentChapterId}`);
+    window.scrollTo(0, 0);
+  } catch (error) {
+    console.error('加载章节失败:', error);
+    document.getElementById('chapter-content').textContent = '加载章节失败，请检查章节文件是否存在。';
+  }
+}
     
     // 章节导航
     function navigateChapter(direction) {
@@ -1116,4 +1120,5 @@ backToIntroFromCharactersBtn.addEventListener('click', () => {
     overlay.addEventListener('click', closeTocSidebar);
   </script>
 </body>
+
 </html>
