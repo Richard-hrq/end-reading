@@ -42,7 +42,7 @@
       background-color: #3a5a8c;
     }
 
-    /* 左侧功能按钮组（目录+角色图谱） */
+    /* 左侧功能按钮组 */
     .sidebar-buttons {
       position: fixed;
       top: 20px;
@@ -68,7 +68,7 @@
       background-color: #3a5a8c;
     }
 
-    /* 页面容器样式 - 用于切换显示/隐藏 */
+    /* 页面容器样式 */
     .page {
       display: none;
       animation: fadeIn 0.5s ease;
@@ -372,13 +372,294 @@
       display: block;
     }
 
+    /* 评论页面样式 */
+    .comments-page {
+      padding: 20px;
+    }
+
+    .comments-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 40px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .comment-input-section {
+      margin-bottom: 40px;
+      padding: 20px;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    #commentInput {
+      width: 100%;
+      min-height: 100px;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-family: inherit;
+      font-size: 1rem;
+      resize: vertical;
+    }
+
+    .comments-list {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .comment-item {
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .comment-content {
+      margin-bottom: 15px;
+      line-height: 1.6;
+    }
+
+    .comment-actions {
+      display: flex;
+      gap: 15px;
+    }
+
+    .comment-action-btn {
+      background: none;
+      border: none;
+      color: #666;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .comment-action-btn:hover {
+      color: #4a6fa5;
+    }
+
+    .comment-action-btn.liked {
+      color: #4a6fa5;
+    }
+
+    .comment-action-btn.disliked {
+      color: #e74c3c;
+    }
+
+    /* 评论删除按钮样式 */
+    .comment-action-btn.delete-btn {
+      color: #999;
+      margin-left: auto;
+    }
+
+    .comment-action-btn.delete-btn:hover {
+      color: #e74c3c;
+    }
+
+    /* 角色卡片头部布局 */
+    .character-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 15px;
+    }
+
+    /* 圆形头像样式 */
+    .character-avatar {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 2px solid #4a6fa5;
+      flex-shrink: 0;
+    }
+
+    .character-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* 设定集页面样式 */
+    .lore-page {
+      padding: 20px;
+    }
+
+    .lore-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 40px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #eee;
+    }
+
+    /* 分类标签样式 */
+    .lore-tabs {
+      display: flex;
+      margin-bottom: 30px;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .lore-tab {
+      padding: 10px 20px;
+      background: none;
+      border: none;
+      border-bottom: 3px solid transparent;
+      cursor: pointer;
+      font-size: 1.1rem;
+      color: #666;
+      margin-right: 10px;
+    }
+
+    .lore-tab.active {
+      border-bottom-color: #4a6fa5;
+      color: #4a6fa5;
+      font-weight: bold;
+    }
+
+    .lore-tab:hover {
+      color: #4a6fa5;
+    }
+
+    /* 内容区域样式 */
+    .lore-content {
+      display: none;
+      background-color: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      line-height: 1.8;
+    }
+
+    .lore-content.active {
+      display: block;
+    }
+
+    .lore-section {
+      margin-bottom: 30px;
+    }
+
+    .lore-section-title {
+      font-size: 1.3rem;
+      margin-bottom: 15px;
+      color: #4a6fa5;
+      padding-bottom: 5px;
+      border-bottom: 1px dashed #ddd;
+    }
+
+    /* 大事件时间线样式 */
+    #eventsContent {
+      line-height: 1.9;
+    }
+
+    .timeline-container {
+      position: relative;
+      padding-left: 30px;
+      margin-left: 15px;
+      margin-top: 20px;
+    }
+
+    .timeline-line {
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background-color: #e0e7e9;
+      z-index: 1;
+    }
+
+    .timeline-events {
+      position: relative;
+      z-index: 2;
+    }
+
+    .timeline-event {
+      position: relative;
+      margin-bottom: 40px;
+      padding-bottom: 10px;
+      transition: transform 0.3s ease;
+    }
+
+    .timeline-event:hover {
+      transform: translateX(5px);
+    }
+
+    .timeline-dot {
+      position: absolute;
+      left: -36px;
+      top: 6px;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background-color: #4a6fa5;
+      border: 3px solid #f8f5f0;
+      box-shadow: 0 0 0 1px rgba(74, 111, 165, 0.3);
+      z-index: 3;
+    }
+
+    .timeline-content {
+      background-color: white !important;
+      padding: 20px 25px;
+      border-radius: 8px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.05) !important;
+      border-left: 3px solid #4a6fa5;
+    }
+
+    .event-header {
+      display: flex;
+      align-items: center;
+    }
+
+    .event-index {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 26px;
+      height: 26px;
+      background-color: #4a6fa5;
+      color: white;
+      border-radius: 50%;
+      font-size: 1rem;
+      font-weight: bold;
+      margin-right: 12px;
+    }
+
+    .event-title {
+      font-size: 1.2rem;
+      color: #2c3e50;
+      font-weight: 600;
+      margin: 0;
+    }
+
+    .event-content {
+      font-size: 1rem;
+      color: #555;
+      margin: 12px 0 0 0;
+      line-height: 1.8;
+    }
+
+    .timeline-event:last-child {
+      margin-bottom: 0;
+    }
+
+    /* 响应式调整 */
     @media (max-width: 768px) {
       .toc-sidebar {
         width: 80%;
         max-width: 300px;
       }
       
-      .reader-header, .characters-header {
+      .reader-header, .characters-header, .comments-header, .lore-header {
         flex-direction: column;
         gap: 15px;
       }
@@ -396,128 +677,46 @@
         padding: 8px 12px;
         font-size: 0.9rem;
       }
+
+      .lore-tabs {
+        flex-wrap: wrap;
+      }
+      
+      .lore-tab {
+        padding: 8px 15px;
+        font-size: 1rem;
+      }
+
+      .timeline-container {
+        padding-left: 25px;
+        margin-left: 10px;
+      }
+      
+      .timeline-event {
+        margin-bottom: 30px;
+      }
+      
+      .timeline-dot {
+        left: -31px;
+      }
+      
+      .timeline-content {
+        padding: 15px 20px;
+      }
+
+      .event-item {
+        margin-bottom: 25px;
+      }
+      
+      .event-title {
+        font-size: 1.05rem;
+      }
+      
+      .event-content {
+        padding-left: 32px;
+        font-size: 0.95rem;
+      }
     }
-    
-    /* 评论页面样式 */
-.comments-page {
-  padding: 20px;
-}
-
-.comments-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  margin-bottom: 40px;
-  padding-bottom: 20px;
-  border-bottom: 1px solid #eee;
-}
-
-.comment-input-section {
-  margin-bottom: 40px;
-  padding: 20px;
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-#commentInput {
-  width: 100%;
-  min-height: 100px;
-  padding: 10px;
-  margin-bottom: 15px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-family: inherit;
-  font-size: 1rem;
-  resize: vertical;
-}
-
-.comments-list {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.comment-item {
-  background-color: white;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-.comment-content {
-  margin-bottom: 15px;
-  line-height: 1.6;
-}
-
-.comment-actions {
-  display: flex;
-  gap: 15px;
-}
-
-.comment-action-btn {
-  background: none;
-  border: none;
-  color: #666;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-
-.comment-action-btn:hover {
-  color: #4a6fa5;
-}
-
-.comment-action-btn.liked {
-  color: #4a6fa5;
-}
-
-.comment-action-btn.disliked {
-  color: #e74c3c;
-}
-
-@media (max-width: 768px) {
-  .comments-header {
-    flex-direction: column;
-    gap: 15px;
-  }
- /* 评论删除按钮样式 */
-.comment-action-btn.delete-btn {
-  color: #999;
-  margin-left: auto; /* 靠右显示 */
-}
-
-.comment-action-btn.delete-btn:hover {
-  color: #e74c3c;
- }
-}
-
- /* 角色卡片头部布局 */
-.character-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 15px;
-}
-
-/* 圆形头像样式 */
-.character-avatar {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%; /* 圆形边框 */
-  overflow: hidden;
-  border: 2px solid #4a6fa5; /* 边框颜色 */
-  flex-shrink: 0; /* 防止缩小 */
-}
-
-.character-avatar img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover; /* 保持图片比例并填充 */
-  display: block;
-}
   </style>
 </head>
 <body>
@@ -525,6 +724,8 @@
 <div class="sidebar-buttons" id="sidebarButtons">
   <button class="sidebar-btn" id="tocBtn">目录</button>
   <button class="sidebar-btn" id="charactersBtn">角色图谱</button>
+  <!-- 新增设定集按钮 -->
+  <button class="sidebar-btn" id="loreBtn">设定集</button>
   <!-- 新增评论按钮 -->
   <button class="sidebar-btn" id="commentsBtn">读者评论</button>
 </div>
@@ -560,6 +761,27 @@
     </div>
     
     <div class="character-grid" id="characterGrid"></div>
+  </div>
+
+  <!-- 设定集页面 -->
+  <div class="page lore-page" id="lorePage">
+    <div class="lore-header">
+      <div class="lore-title-group">
+        <h2>小说设定集</h2>
+        <p>世界观与关键事件的详细设定</p>
+      </div>
+      <div>
+        <button class="btn" id="backFromLoreBtn">返回</button>
+      </div>
+    </div>
+    
+    <div class="lore-tabs">
+      <button class="lore-tab active" data-tab="worldview">世界观</button>
+      <button class="lore-tab" data-tab="events">大事件</button>
+    </div>
+    
+    <div class="lore-content active" id="worldviewContent"></div>
+    <div class="lore-content" id="eventsContent"></div>
   </div>
 
   <!-- 读者评论页面（新增） -->
@@ -629,9 +851,7 @@
     let allChapters = [];
     let novelData = null;
     let characterMap = new Map();
-    // 保存页面切换历史记录（新增变量）
     let pageHistory = [];
-    // 新增评论相关变量
     let comments = [];
 
     // DOM元素
@@ -648,14 +868,18 @@
     const overlay = document.getElementById('overlay');
     const tocList = document.getElementById('tocList');
     const characterGrid = document.getElementById('characterGrid');
-    const sidebarButtons = document.getElementById('sidebarButtons'); // 新增：左侧按钮组
-    // 新增评论相关变量
+    const sidebarButtons = document.getElementById('sidebarButtons');
     const commentsPage = document.getElementById('commentsPage');
     const commentsBtn = document.getElementById('commentsBtn');
     const backFromCommentsBtn = document.getElementById('backFromCommentsBtn');
     const commentInput = document.getElementById('commentInput');
     const submitCommentBtn = document.getElementById('submitCommentBtn');
     const commentsList = document.getElementById('commentsList');
+    const lorePage = document.getElementById('lorePage');
+    const loreBtn = document.getElementById('loreBtn');
+    const backFromLoreBtn = document.getElementById('backFromLoreBtn');
+    const loreTabs = document.querySelectorAll('.lore-tab');
+    const loreContents = document.querySelectorAll('.lore-content');
 
 
     // 页面加载时初始化
@@ -672,6 +896,8 @@
         // 初始化角色图谱
         initCharacterMap();
         renderCharactersPage();
+
+        switchLoreTab('worldview');
         
         // 保存所有章节信息
         allChapters = novelData.chapters;
@@ -704,6 +930,168 @@
         });
       }
     }
+
+    // 设定集数据（世界观+大事件）
+const loreData = {
+  worldview: [
+    {
+      title: "时代背景",
+      content: "小说的世界观建立在真实的历史进程中，时代的每一次变动都直接成为个体苦难的源头，个体在时代面前几乎没有反抗能力。"
+    },
+    {
+      title: "命运逻辑",
+      content: "小说中的世界观不相信 “善有善报”，反而呈现出一种 “命运无常且残酷” 的逻辑，苦难的到来没有预兆，也不分善恶。"
+    },
+    {
+      title: "生存意义",
+      content: "尽管世界观充满苦难，但核心并非传递绝望，而是在极致的失去后，回归 “活着” 本身的意义 —— 活着不需要依附财富、亲情或荣誉，“活着” 这件事本身就是价值。"
+    }
+  ],
+  events: [
+        {
+          index: 1,
+          title: "福贵赌博输光家产",
+          content: "福贵出身地主家庭，却因沉迷赌博，被龙二设局骗走全部家产，父亲因此气死，母亲重病，妻子家珍也回了娘家，福贵从富家子弟沦为佃农。"
+        },
+        {
+          index: 2,
+          title: "福贵被抓壮丁",
+          content: "福贵去城里为母亲请郎中治病时，被国民党军队抓了壮丁，在战场上经历了九死一生，后被解放军俘虏，获得路费和路条后得以回家。"
+        },
+        {
+          index: 3,
+          title: "母亲去世",
+          content: "福贵回到家乡后，发现母亲已经去世，此时妻子家珍带着女儿凤霞和儿子有庆艰难度日，为了生计，福贵不得不向龙二佃租土地。"
+        },
+        {
+          index: 4,
+          title: "土地改革，龙二被枪毙",
+          content: "新中国成立后，龙二被划为地主枪毙，土地全部分给农民，福贵分得五亩田地，一家人的生活似乎有了新的希望。"
+        },
+        {
+          index: 5,
+          title: "有庆死亡",
+          content: "人民公社时期，有庆在为生孩子的校长（县长夫人）献血时，因抽血过度死亡，福贵去找县长说理，却发现县长是自己以前的战友。"
+        },
+        {
+          index: 6,
+          title: "凤霞出嫁",
+          content: "凤霞长大后，嫁给了搬运工万二喜，二喜虽然是个偏头，但人残心善，两人夫妻感情甚笃。"
+        },
+        {
+          index: 7,
+          title: "凤霞难产去世",
+          content: "凤霞在生产时，因大出血死亡，留下了儿子苦根。此后，家珍也油尽灯枯离开了人世。"
+        },
+        {
+          index: 8,
+          title: "二喜死亡",
+          content: "凤霞死后，二喜独自抚养苦根，不久后，二喜在工地干活时，被掉落的水泥板砸中身亡，福贵只能独自抚养外孙苦根。"
+        },
+        {
+          index: 9,
+          title: "苦根撑死",
+          content: "苦根跟着福贵生活，由于长期饥饿，一次福贵煮了豆子给苦根吃，苦根因吃太多豆子被撑死，福贵失去了最后一个亲人。"
+        },
+        {
+          index: 10,
+          title: "福贵与老牛相伴",
+          content: "苦根死后，福贵买了一头老牛，给它取名“福贵”，从此与老牛相依为命，平静地度过余生。"
+        }
+      ]
+};
+
+// 渲染设定集内容
+function renderLoreContent() {
+  // 渲染世界观
+  const worldviewContainer = document.getElementById('worldviewContent');
+  worldviewContainer.innerHTML = '';
+  loreData.worldview.forEach(section => {
+    worldviewContainer.innerHTML += `
+      <div class="lore-section">
+        <h3 class="lore-section-title">${section.title}</h3>
+        <p>${section.content}</p>
+      </div>
+    `;
+  });
+  
+  // 渲染大事件
+  const eventsContainer = document.getElementById('eventsContent');
+  eventsContainer.innerHTML = '';
+
+  const timelineContainer = document.createElement('div');
+      timelineContainer.className = 'timeline-container';
+
+  const timelineLine = document.createElement('div');
+      timelineLine.className = 'timeline-line';
+      timelineContainer.appendChild(timelineLine);
+
+  const timelineEvents = document.createElement('div');
+      timelineEvents.className = 'timeline-events';
+      timelineContainer.appendChild(timelineEvents);
+  
+  loreData.events.forEach(event => {
+        const eventEl = document.createElement('div');
+        eventEl.className = 'timeline-event';
+        eventEl.innerHTML = `
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <div class="event-header">
+              <span class="event-index">${event.index}</span>
+              <h4 class="event-title">${event.title}</h4>
+            </div>
+            <p class="event-content">${event.content}</p>
+          </div>
+        `;
+        timelineEvents.appendChild(eventEl);
+      });
+
+  eventsContainer.appendChild(timelineContainer);
+  
+}
+
+// 切换设定集标签
+function switchLoreTab(tabId) {
+  // 更新标签状态
+  loreTabs.forEach(tab => {
+    tab.classList.remove('active');
+    if (tab.dataset.tab === tabId) {
+      tab.classList.add('active');
+    }
+  });
+  
+  // 更新内容显示
+  loreContents.forEach(content => {
+    content.classList.remove('active');
+    if (content.id === `${tabId}Content`) {
+      content.classList.add('active');
+    }
+  });
+}
+
+// 切换到设定集页面
+function switchToLorePage() {
+  switchToPage('lorePage');
+  renderLoreContent(); // 渲染内容
+}
+
+// 绑定设定集相关事件
+loreBtn.addEventListener('click', switchToLorePage);
+backFromLoreBtn.addEventListener('click', () => {
+  if (pageHistory.length > 0) {
+    const prevPage = pageHistory.pop();
+    switchToPage(prevPage);
+  } else {
+    switchToPage('introPage');
+  }
+});
+
+// 绑定标签切换事件
+loreTabs.forEach(tab => {
+  tab.addEventListener('click', () => {
+    switchLoreTab(tab.dataset.tab);
+  });
+});
 
     // 初始化评论（从localStorage加载）
 function initComments() {
@@ -1046,11 +1434,11 @@ async function loadChapter(chapterId) {
       closeTocSidebar();
       
       // 控制左侧按钮组显示/隐藏
-       if (pageId === 'charactersPage' || pageId === 'commentsPage') {
-    sidebarButtons.style.display = 'none';
-  } else {
-    sidebarButtons.style.display = 'flex';
-  }
+       if (pageId === 'charactersPage' || pageId === 'commentsPage' || pageId === 'lorePage') {
+        sidebarButtons.style.display = 'none';
+      } else {
+        sidebarButtons.style.display = 'flex';
+      }
     }
 
     // 切换到阅读页面
@@ -1132,8 +1520,20 @@ backToIntroFromCharactersBtn.addEventListener('click', () => {
     tocBtn.addEventListener('click', openTocSidebar);
     closeToc.addEventListener('click', closeTocSidebar);
     overlay.addEventListener('click', closeTocSidebar);
+    loreBtn.addEventListener('click', switchToLorePage);
+    backFromLoreBtn.addEventListener('click', () => {
+      if (pageHistory.length > 0) {
+        const prevPage = pageHistory.pop();
+        switchToPage(prevPage);
+      } else {
+        switchToPage('introPage');
+      }
+    });
+    loreTabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        switchLoreTab(tab.dataset.tab);
+      });
+    });
   </script>
 </body>
-
 </html>
-
