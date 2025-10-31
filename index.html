@@ -1521,22 +1521,9 @@ backToIntroFromCharactersBtn.addEventListener('click', () => {
     tocBtn.addEventListener('click', openTocSidebar);
     closeToc.addEventListener('click', closeTocSidebar);
     overlay.addEventListener('click', closeTocSidebar);
-    loreBtn.addEventListener('click', switchToLorePage);
-    backFromLoreBtn.addEventListener('click', () => {
-      if (pageHistory.length > 0) {
-        const prevPage = pageHistory.pop();
-        switchToPage(prevPage);
-      } else {
-        switchToPage('introPage');
-      }
-    });
-    loreTabs.forEach(tab => {
-      tab.addEventListener('click', () => {
-        switchLoreTab(tab.dataset.tab);
-      });
-    });
   </script>
 </body>
 </html>
+
 
 
