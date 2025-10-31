@@ -1501,12 +1501,9 @@ commentInput.addEventListener('keypress', (e) => {
 });
     
      // 阅读页面返回按钮事件（确保正确记录历史）
-backToIntroBtn.addEventListener('click', () => {
-  switchToIntroPage(); // 直接跳转到介绍页（会被switchToPage记录历史）
-});
-
-    charactersBtn.addEventListener('click', switchToCharactersPage);
-
+backToIntroBtn.addEventListener('click', switchToIntroPage);
+    
+charactersBtn.addEventListener('click', switchToCharactersPage);
    // 角色页面返回按钮事件（修改为从历史记录获取上一页）
 backToIntroFromCharactersBtn.addEventListener('click', () => {
   if (pageHistory.length > 0) {
@@ -1537,3 +1534,4 @@ backToIntroFromCharactersBtn.addEventListener('click', () => {
   </script>
 </body>
 </html>
+
