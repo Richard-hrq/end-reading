@@ -1339,6 +1339,7 @@ function switchToCommentsPage() {
           a.textContent = `${chapter.id}. ${chapter.title}`;
           a.onclick = (e) => {
             e.preventDefault();
+            switchToReaderPage(); // 新增：先切换到阅读页面
             loadChapter(chapter.id);
             closeTocSidebar();
           };
@@ -1447,6 +1448,11 @@ async function loadChapter(chapterId) {
 
     // 切换到阅读页面
     function switchToReaderPage() {
+      // 记录当前页面（如果当前是介绍页，则记录介绍页为历史）
+      const currentPage = document.querySelector('.page.active')?.id;
+      if (currentPage === 'introPage') {
+         pageHistory.push(currentPage);
+      }
       switchToPage('readerPage');
       // 更新阅读页面的小说标题和作者
       document.getElementById('novel-title').textContent = novelData.title;
@@ -1524,6 +1530,7 @@ backToIntroFromCharactersBtn.addEventListener('click', () => {
   </script>
 </body>
 </html>
+
 
 
 
