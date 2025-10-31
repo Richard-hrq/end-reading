@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>小说阅读器</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Georgia', serif;
+      line-height: 1.8;
+      background-color: #f8f5f0;
+      color: #333;
+      padding: 20px;
+      max-width: 1000px;
+      margin: 0 auto;
+      position: relative;
+    }
+    
+    /* 公共按钮样式 */
+    .btn {
+      padding: 10px 20px;
+      background-color: #4a6fa5;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background-color 0.3s;
+      text-decoration: none;
+      display: inline-block;
+      margin: 5px;
+    }
+    
+    .btn:hover {
+      background-color: #3a5a8c;
+    }
+
+    /* 左侧功能按钮组（目录+角色图谱） */
+    .sidebar-buttons {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    
+    .sidebar-btn {
+      padding: 10px 15px;
+      background-color: #4a6fa5;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      text-align: center;
+    }
+    
+    .sidebar-btn:hover {
+      background-color: #3a5a8c;
+    }
+
+    /* 页面容器样式 - 用于切换显示/隐藏 */
+    .page {
+      display: none;
+      animation: fadeIn 0.5s ease;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    
+    .page.active {
+      display: block;
+    }
+
+    /* 小说介绍页面样式 */
+    .intro-page {
+      text-align: center;
+      padding: 20px 0;
+    }
+    
+    .novel-cover {
+      max-width: 200px;
+      margin: 0 auto 30px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+    
+    .novel-meta {
+      margin: 20px 0;
+      color: #666;
+    }
+    
+    .meta-item {
+      margin: 8px 0;
+    }
+    
+    .genre-tags {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 15px 0;
+    }
+    
+    .genre-tag {
+      background-color: #e0e7ff;
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+    }
+    
+    .intro-content {
+      text-align: left;
+      margin: 30px 0;
+      padding: 20px;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .intro-paragraph {
+      margin-bottom: 1.5rem;
+      line-height: 1.8;
+    }
+    
+    .intro-paragraph:last-child {
+      margin-bottom: 0;
+    }
+    
+    .start-reading {
+      margin-top: 20px;
+    }
+
+    /* 角色图谱页面样式 */
+    .characters-page {
+      padding: 20px;
+    }
+    
+    .characters-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      text-align: center;
+      margin-bottom: 40px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #eee;
+    }
+    
+    .characters-title-group {
+      flex: 1;
+      min-width: 250px;
+    }
+    
+    .character-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 25px;
+      margin-bottom: 50px;
+    }
+    
+    .character-card {
+      background-color: white;
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
+    }
+    
+    .character-card:hover {
+      transform: translateY(-5px);
+    }
+    
+    .character-name {
+      font-size: 1.5rem;
+      margin-bottom: 5px;
+      color: #4a6fa5;
+    }
+    
+    .character-role {
+      color: #666;
+      font-style: italic;
+      margin-bottom: 15px;
+      font-size: 0.9rem;
+    }
+    
+    .character-description {
+      margin-bottom: 15px;
+      font-size: 0.95rem;
+    }
+    
+    .relationships-title {
+      font-size: 1rem;
+      margin-bottom: 8px;
+      color: #555;
+    }
+    
+    .relationship-item {
+      font-size: 0.9rem;
+      margin-bottom: 4px;
+      padding-left: 10px;
+      position: relative;
+    }
+    
+    .relationship-item::before {
+      content: "•";
+      color: #4a6fa5;
+      position: absolute;
+      left: 0;
+    }
+    
+    .relationship-item strong {
+      color: #4a6fa5;
+    }
+
+    /* 阅读页面样式 */
+    .reader-page {
+      padding: 20px 0;
+    }
+    
+    .reader-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 40px;
+      flex-wrap: wrap;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #eee;
+    }
+    
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
+    
+    .author {
+      color: #666;
+      font-style: italic;
+    }
+    
+    .chapter-title {
+      text-align: center;
+      margin: 30px 0;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #ddd;
+    }
+    
+    .chapter-content {
+      margin-bottom: 40px;
+      font-size: 1.1rem;
+    }
+    
+    .chapter-content p {
+      margin-bottom: 1.5rem;
+    }
+    
+    .navigation {
+      display: flex;
+      justify-content: space-between;
+      margin: 40px 0;
+    }
+    
+    .nav-btn {
+      padding: 10px 20px;
+      background-color: #4a6fa5;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background-color 0.3s;
+    }
+    
+    .nav-btn:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+    
+    .chapter-info {
+      text-align: center;
+      color: #666;
+      margin-top: 20px;
+    }
+
+    /* 目录侧边栏样式 */
+    .toc-sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 300px;
+      height: 100vh;
+      background-color: white;
+      box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+      padding: 20px;
+      transform: translateX(-100%);
+      transition: transform 0.3s ease;
+      overflow-y: auto;
+      z-index: 200;
+    }
+
+    .toc-sidebar.open {
+      transform: translateX(0);
+    }
+
+    .toc-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .close-toc {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: #666;
+    }
+
+    .toc-list {
+      list-style: none;
+    }
+
+    .toc-item {
+      margin-bottom: 10px;
+    }
+
+    .toc-link {
+      display: block;
+      padding: 8px 10px;
+      border-radius: 4px;
+      color: #333;
+      text-decoration: none;
+      transition: background-color 0.2s;
+    }
+
+    .toc-link:hover {
+      background-color: #f0f0f0;
+    }
+
+    .toc-link.active {
+      background-color: #4a6fa5;
+      color: white;
+    }
+
+    /* 遮罩层样式 */
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0,0,0,0.5);
+      z-index: 150;
+      display: none;
+    }
+
+    .overlay.show {
+      display: block;
+    }
+
+    @media (max-width: 768px) {
+      .toc-sidebar {
+        width: 80%;
+        max-width: 300px;
+      }
+      
+      .reader-header, .characters-header {
+        flex-direction: column;
+        gap: 15px;
+      }
+      
+      .character-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .sidebar-buttons {
+        top: 10px;
+        left: 10px;
+      }
+      
+      .sidebar-btn {
+        padding: 8px 12px;
+        font-size: 0.9rem;
+      }
+    }
+    
+    /* 评论页面样式 */
+.comments-page {
+  padding: 20px;
+}
+
+.comments-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 40px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #eee;
+}
+
+.comment-input-section {
+  margin-bottom: 40px;
+  padding: 20px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+#commentInput {
+  width: 100%;
+  min-height: 100px;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-family: inherit;
+  font-size: 1rem;
+  resize: vertical;
+}
+
+.comments-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.comment-item {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.comment-content {
+  margin-bottom: 15px;
+  line-height: 1.6;
+}
+
+.comment-actions {
+  display: flex;
+  gap: 15px;
+}
+
+.comment-action-btn {
+  background: none;
+  border: none;
+  color: #666;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.comment-action-btn:hover {
+  color: #4a6fa5;
+}
+
+.comment-action-btn.liked {
+  color: #4a6fa5;
+}
+
+.comment-action-btn.disliked {
+  color: #e74c3c;
+}
+
+@media (max-width: 768px) {
+  .comments-header {
+    flex-direction: column;
+    gap: 15px;
+  }
+ /* 评论删除按钮样式 */
+.comment-action-btn.delete-btn {
+  color: #999;
+  margin-left: auto; /* 靠右显示 */
+}
+
+.comment-action-btn.delete-btn:hover {
+  color: #e74c3c;
+ }
+}
+
+ /* 角色卡片头部布局 */
+.character-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 15px;
+}
+
+/* 圆形头像样式 */
+.character-avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%; /* 圆形边框 */
+  overflow: hidden;
+  border: 2px solid #4a6fa5; /* 边框颜色 */
+  flex-shrink: 0; /* 防止缩小 */
+}
+
+.character-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* 保持图片比例并填充 */
+  display: block;
+}
+  </style>
+</head>
+<body>
+  <!-- 左侧功能按钮组（目录+角色图谱+评论）-->
+<div class="sidebar-buttons" id="sidebarButtons">
+  <button class="sidebar-btn" id="tocBtn">目录</button>
+  <button class="sidebar-btn" id="charactersBtn">角色图谱</button>
+  <!-- 新增评论按钮 -->
+  <button class="sidebar-btn" id="commentsBtn">读者评论</button>
+</div>
+
+  <!-- 小说介绍页面 -->
+  <div class="page intro-page active" id="introPage">
+    <h1 id="intro-title"></h1>
+    <p class="author" id="intro-author"></p>
+    
+    <img src="" alt="小说封面" class="novel-cover" id="novelCover">
+    
+    <div class="novel-meta">
+      <div class="meta-item">状态：<span id="novelStatus"></span></div>
+      <div class="genre-tags" id="genreTags"></div>
+      <div class="meta-item">总章节：<span id="totalChapters"></span></div>
+    </div>
+    
+    <div class="intro-content" id="introContent"></div>
+    
+    <a href="#" class="btn start-reading" id="startReadingBtn">开始阅读</a>
+  </div>
+
+  <!-- 角色图谱页面 -->
+  <div class="page characters-page" id="charactersPage">
+    <div class="characters-header">
+      <div class="characters-title-group">
+        <h2>角色图谱</h2>
+        <p>以下是小说中的主要角色及其关系</p>
+      </div>
+      <div>
+        <button class="btn" id="backToIntroFromCharactersBtn">返回</button>
+      </div>
+    </div>
+    
+    <div class="character-grid" id="characterGrid"></div>
+  </div>
+
+  <!-- 读者评论页面（新增） -->
+<div class="page comments-page" id="commentsPage">
+  <div class="comments-header">
+    <div class="comments-title-group">
+      <h2>读者评论</h2>
+      <p>分享你的想法，与其他读者交流</p>
+    </div>
+    <div>
+      <button class="btn" id="backFromCommentsBtn">返回</button>
+    </div>
+  </div>
+  
+  <!-- 评论输入区 -->
+  <div class="comment-input-section">
+    <textarea id="commentInput" placeholder="写下你的评论..."></textarea>
+    <button class="btn" id="submitCommentBtn">发表评论</button>
+  </div>
+  
+  <!-- 评论列表 -->
+  <div class="comments-list" id="commentsList">
+    <!-- 评论将通过JS动态生成 -->
+  </div>
+</div>
+
+  <!-- 阅读页面 -->
+  <div class="page reader-page" id="readerPage">
+    <div class="reader-header">
+      <div>
+        <h1 id="novel-title"></h1>
+        <p class="author" id="novel-author"></p>
+      </div>
+      <div>
+        <button class="btn" id="backToIntroBtn">返回介绍</button>
+      </div>
+    </div>
+      
+    <h2 class="chapter-title" id="chapter-title"></h2>
+      
+    <div class="chapter-content" id="chapter-content"></div>
+      
+    <div class="navigation">
+      <button class="nav-btn" id="prev-btn" onclick="navigateChapter(-1)">上一章</button>
+      <button class="nav-btn" id="next-btn" onclick="navigateChapter(1)">下一章</button>
+    </div>
+      
+    <div class="chapter-info" id="chapter-info"></div>
+  </div>
+
+  <!-- 目录侧边栏 -->
+  <div class="toc-sidebar" id="tocSidebar">
+    <div class="toc-header">
+      <h2>章节目录</h2>
+      <button class="close-toc" id="closeToc">&times;</button>
+    </div>
+    <ul class="toc-list" id="tocList"></ul>
+  </div>
+
+  <!-- 遮罩层 -->
+  <div class="overlay" id="overlay"></div>
+
+  <script>
+    let currentChapterId = 1;
+    let totalChapters = 0;
+    let currentIndex = 0;
+    let allChapters = [];
+    let novelData = null;
+    let characterMap = new Map();
+    // 保存页面切换历史记录（新增变量）
+    let pageHistory = [];
+    // 新增评论相关变量
+    let comments = [];
+
+    // DOM元素
+    const introPage = document.getElementById('introPage');
+    const charactersPage = document.getElementById('charactersPage');
+    const readerPage = document.getElementById('readerPage');
+    const charactersBtn = document.getElementById('charactersBtn');
+    const backToIntroFromCharactersBtn = document.getElementById('backToIntroFromCharactersBtn');
+    const startReadingBtn = document.getElementById('startReadingBtn');
+    const backToIntroBtn = document.getElementById('backToIntroBtn');
+    const tocBtn = document.getElementById('tocBtn');
+    const tocSidebar = document.getElementById('tocSidebar');
+    const closeToc = document.getElementById('closeToc');
+    const overlay = document.getElementById('overlay');
+    const tocList = document.getElementById('tocList');
+    const characterGrid = document.getElementById('characterGrid');
+    const sidebarButtons = document.getElementById('sidebarButtons'); // 新增：左侧按钮组
+    // 新增评论相关变量
+    const commentsPage = document.getElementById('commentsPage');
+    const commentsBtn = document.getElementById('commentsBtn');
+    const backFromCommentsBtn = document.getElementById('backFromCommentsBtn');
+    const commentInput = document.getElementById('commentInput');
+    const submitCommentBtn = document.getElementById('submitCommentBtn');
+    const commentsList = document.getElementById('commentsList');
+
+
+    // 页面加载时初始化
+    window.onload = async () => {
+      try {
+        // 获取小说元信息
+        // 新代码（直接读取JSON文件）
+        const novelResponse = await fetch('./data/novels.json');
+        novelData = await novelResponse.json();
+        
+        // 渲染小说介绍页面
+        renderIntroPage();
+        
+        // 初始化角色图谱
+        initCharacterMap();
+        renderCharactersPage();
+        
+        // 保存所有章节信息
+        allChapters = novelData.chapters;
+        totalChapters = allChapters.length;
+        
+        // 生成目录
+        generateToc();
+        
+        // 从URL获取章节ID
+        const urlParams = new URLSearchParams(window.location.search);
+        const chapterId = urlParams.get('chapter');
+        if (chapterId) {
+          currentChapterId = parseInt(chapterId);
+          switchToReaderPage();
+          loadChapter(currentChapterId);
+        }
+      } catch (error) {
+        console.error('初始化失败:', error);
+        document.getElementById('introContent').textContent = '加载小说信息失败，请刷新页面重试。';
+      }
+      // 新增评论初始化
+  initComments();
+    };
+
+    // 初始化角色映射表
+    function initCharacterMap() {
+      if (novelData.characters && novelData.characters.length) {
+        novelData.characters.forEach(character => {
+          characterMap.set(character.id, character);
+        });
+      }
+    }
+
+    // 初始化评论（从localStorage加载）
+function initComments() {
+  const savedComments = localStorage.getItem('novelComments');
+  if (savedComments) {
+    comments = JSON.parse(savedComments);
+  } else {
+    // 示例评论
+    comments = [
+      {
+        id: 1,
+        content: "这个故事的设定很有趣，特别是关于外星信号的部分。",
+        likes: 5,
+        dislikes: 1,
+        userAction: null // 'like' | 'dislike' | null
+      }
+    ];
+    saveComments();
+  }
+  renderComments();
+}
+
+    // 保存评论到localStorage
+function saveComments() {
+  localStorage.setItem('novelComments', JSON.stringify(comments));
+}
+ 
+    // 渲染小说介绍页面
+    function renderIntroPage() {
+      document.getElementById('intro-title').textContent = novelData.title;
+      document.getElementById('intro-author').textContent = novelData.author;
+      document.getElementById('novelCover').src = novelData.coverImage || '';
+      document.getElementById('novelStatus').textContent = novelData.status;
+      document.getElementById('totalChapters').textContent = novelData.chapters ? novelData.chapters.length : 0;
+      
+      // 渲染类型标签
+      const genreTags = document.getElementById('genreTags');
+      genreTags.innerHTML = '';
+      if (novelData.genre && novelData.genre.length) {
+        novelData.genre.forEach(genre => {
+          const tag = document.createElement('span');
+          tag.className = 'genre-tag';
+          tag.textContent = genre;
+          genreTags.appendChild(tag);
+        });
+      }
+
+      // 处理介绍文本的分段显示
+      const introContent = document.getElementById('introContent');
+      if (novelData.introduction) {
+        const paragraphs = novelData.introduction
+          .split(/\n\s*\n/)
+          .filter(p => p.trim() !== '')
+          .map(paragraph => `<p class="intro-paragraph">${paragraph.replace(/\n/g, '<br>')}</p>`);
+        introContent.innerHTML = paragraphs.join('');
+      } else {
+        introContent.textContent = '暂无小说介绍';
+      }
+    }
+
+    // 渲染角色图谱页面
+    function renderCharactersPage() {
+           
+      // 清空角色网格
+      characterGrid.innerHTML = '';
+      
+      // 如果没有角色信息
+      if (!novelData.characters || novelData.characters.length === 0) {
+        characterGrid.innerHTML = '<p>暂无角色信息</p>';
+        return;
+      }
+      
+      // 渲染每个角色卡片
+      novelData.characters.forEach(character => {
+        const card = document.createElement('div');
+        card.className = 'character-card';
+        
+        // 构建角色关系HTML
+        let relationshipsHtml = '';
+        if (character.relationships && character.relationships.length) {
+          relationshipsHtml = '<div class="relationships-title">人物关系：</div>';
+          character.relationships.forEach(rel => {
+            const targetChar = characterMap.get(rel.target);
+            if (targetChar) {
+              relationshipsHtml += `
+                <div class="relationship-item">
+                  与 <strong>${targetChar.name}</strong> 是${rel.relation}
+                </div>
+              `;
+            }
+          });
+        }
+        
+         // 角色卡片内容（新增头像部分）
+  card.innerHTML = `
+    <div class="character-header">
+      <h3 class="character-name">${character.name}</h3>
+      <!-- 新增角色头像 -->
+      <div class="character-avatar">
+        <img src="${character.avatar || 'https://picsum.photos/seed/'+character.id+'/100'}" 
+             alt="${character.name}的头像">
+      </div>
+    </div>
+    <div class="character-role">${character.role || '未知角色'}</div>
+    <div class="character-description">${character.description || '暂无描述'}</div>
+    ${relationshipsHtml}
+  `;
+        
+        characterGrid.appendChild(card);
+      });
+    }
+
+    // 渲染评论列表
+function renderComments() {
+  commentsList.innerHTML = '';
+  
+  if (comments.length === 0) {
+    commentsList.innerHTML = '<p class="no-comments">暂无评论，快来发表第一条评论吧！</p>';
+    return;
+  }
+  
+  comments.forEach(comment => {
+    const commentEl = document.createElement('div');
+    commentEl.className = 'comment-item';
+    commentEl.innerHTML = `
+      <div class="comment-content">${comment.content}</div>
+      <div class="comment-actions">
+        <button class="comment-action-btn ${comment.userAction === 'like' ? 'liked' : ''}" 
+                onclick="handleCommentReaction(${comment.id}, 'like')">
+          <i class="fa fa-thumbs-up"></i> ${comment.likes}
+        </button>
+        <button class="comment-action-btn ${comment.userAction === 'dislike' ? 'disliked' : ''}"
+                onclick="handleCommentReaction(${comment.id}, 'dislike')">
+          <i class="fa fa-thumbs-down"></i> ${comment.dislikes}
+        </button>
+        <!-- 新增删除按钮 -->
+        <button class="comment-action-btn delete-btn"
+          onclick="deleteComment(${comment.id})">
+            <i class="fa fa-trash"></i> 删除
+        </button>
+      </div>
+    `;
+    commentsList.appendChild(commentEl);
+  });
+}
+
+    // 处理评论点赞/踩
+function handleCommentReaction(commentId, action) {
+  const comment = comments.find(c => c.id === commentId);
+  if (!comment) return;
+  
+  // 取消之前的操作
+  if (comment.userAction) {
+    if (comment.userAction === 'like') {
+      comment.likes--;
+    } else {
+      comment.dislikes--;
+    }
+  }
+  
+  // 处理当前操作
+  if (comment.userAction === action) {
+    // 再次点击取消操作
+    comment.userAction = null;
+  } else {
+    // 执行新操作
+    comment.userAction = action;
+    if (action === 'like') {
+      comment.likes++;
+    } else {
+      comment.dislikes++;
+    }
+  }
+  
+  saveComments();
+  renderComments();
+}
+
+// 提交新评论
+function submitNewComment() {
+  const content = commentInput.value.trim();
+  if (!content) return;
+  
+  const newComment = {
+    id: Date.now(), // 使用时间戳作为唯一ID
+    content: content,
+    likes: 0,
+    dislikes: 0,
+    userAction: null
+  };
+  
+  comments.unshift(newComment); // 添加到最前面
+  commentInput.value = ''; // 清空输入框
+  saveComments();
+  renderComments();
+}
+
+// 删除评论函数
+function deleteComment(commentId) {
+  // 确认删除
+  if (confirm('确定要删除这条评论吗？')) {
+    // 过滤掉要删除的评论
+    comments = comments.filter(comment => comment.id !== commentId);
+    // 保存并重新渲染评论列表
+    saveComments();
+    renderComments();
+  }
+}
+
+// 切换到评论页面
+function switchToCommentsPage() {
+  switchToPage('commentsPage');
+}
+
+    // 生成目录
+    function generateToc() {
+      tocList.innerHTML = '';
+      
+      if (allChapters && allChapters.length) {
+        allChapters.forEach((chapter, index) => {
+          const li = document.createElement('li');
+          li.className = 'toc-item';
+          
+          const a = document.createElement('a');
+          a.className = 'toc-link';
+          a.href = `?chapter=${chapter.id}`;
+          a.textContent = `${chapter.id}. ${chapter.title}`;
+          a.onclick = (e) => {
+            e.preventDefault();
+            loadChapter(chapter.id);
+            closeTocSidebar();
+          };
+          
+          li.appendChild(a);
+          tocList.appendChild(li);
+        });
+      }
+    }
+
+    // 更新目录选中状态
+    function updateTocActive() {
+      const links = tocList.querySelectorAll('.toc-link');
+      links.forEach(link => {
+        const linkChapterId = parseInt(link.href.split('chapter=')[1]);
+        if (linkChapterId === currentChapterId) {
+          link.classList.add('active');
+        } else {
+          link.classList.remove('active');
+        }
+      });
+    }
+
+    // 加载章节内容
+    async function loadChapter(chapterId) {
+      try {
+        const response = await fetch(`/api/chapter/${chapterId}`);
+        if (!response.ok) {
+          throw new Error('章节不存在');
+        }
+        
+        const data = await response.json();
+        
+        // 更新当前章节状态
+        currentChapterId = data.chapter.id;
+        currentIndex = data.currentIndex;
+        totalChapters = data.totalChapters;
+        
+        // 渲染章节标题和内容
+        document.getElementById('chapter-title').textContent = data.chapter.title;
+        
+        // 处理章节内容
+        const paragraphs = data.chapter.content
+          .split('\n\n')
+          .filter(p => p.trim() !== '')
+          .map(p => `<p>${p.replace(/\n/g, '<br>')}</p>`);
+        
+        document.getElementById('chapter-content').innerHTML = paragraphs.join('');
+        
+        // 更新导航按钮状态
+        document.getElementById('prev-btn').disabled = currentIndex === 0;
+        document.getElementById('next-btn').disabled = currentIndex === totalChapters - 1;
+        
+        // 显示章节进度
+        document.getElementById('chapter-info').textContent = 
+          `第 ${currentIndex + 1} 章 / 共 ${totalChapters} 章`;
+        
+        // 更新目录选中状态
+        updateTocActive();
+        
+        // 更新URL
+        history.pushState(null, '', `?chapter=${currentChapterId}`);
+        window.scrollTo(0, 0);
+      } catch (error) {
+        console.error('加载章节失败:', error);
+        document.getElementById('chapter-content').textContent = '加载章节失败，请尝试其他章节。';
+      }
+    }
+    
+    // 章节导航
+    function navigateChapter(direction) {
+      const newIndex = currentIndex + direction;
+      if (newIndex >= 0 && newIndex < totalChapters) {
+        const targetChapter = allChapters[newIndex];
+        loadChapter(targetChapter.id);
+      }
+    }
+
+    // 页面切换函数（新增：控制左侧按钮组显示/隐藏）
+    function switchToPage(pageId) {
+    // 记录当前页面ID（除首次加载外）
+    const currentPage = document.querySelector('.page.active')?.id;
+    if (currentPage && currentPage !== pageId) {
+        pageHistory.push(currentPage);
+    }
+      // 隐藏所有页面
+      document.querySelectorAll('.page').forEach(page => {
+        page.classList.remove('active');
+      });
+      // 显示目标页面
+      document.getElementById(pageId).classList.add('active');
+      // 关闭可能打开的侧边栏
+      closeTocSidebar();
+      
+      // 控制左侧按钮组显示/隐藏
+       if (pageId === 'charactersPage' || pageId === 'commentsPage') {
+    sidebarButtons.style.display = 'none';
+  } else {
+    sidebarButtons.style.display = 'flex';
+  }
+    }
+
+    // 切换到阅读页面
+    function switchToReaderPage() {
+      switchToPage('readerPage');
+      // 更新阅读页面的小说标题和作者
+      document.getElementById('novel-title').textContent = novelData.title;
+      document.getElementById('novel-author').textContent = novelData.author;
+    }
+
+    // 切换到介绍页面（添加历史记录点）
+function switchToIntroPage() {
+  switchToPage('introPage');
+  }
+
+    // 切换到角色图谱页面（更新历史记录，确保返回功能正确）
+function switchToCharactersPage() {
+  switchToPage('charactersPage');
+  }
+
+
+    // 目录控制
+    function openTocSidebar() {
+      tocSidebar.classList.add('open');
+      overlay.classList.add('show');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeTocSidebar() {
+      tocSidebar.classList.remove('open');
+      overlay.classList.remove('show');
+      document.body.style.overflow = '';
+    }
+
+    
+
+    // 绑定事件
+    startReadingBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      switchToReaderPage();
+      loadChapter(1); // 默认加载第一章
+    });
+
+    // 绑定评论相关事件
+commentsBtn.addEventListener('click', switchToCommentsPage);
+backFromCommentsBtn.addEventListener('click', () => {
+  if (pageHistory.length > 0) {
+    const prevPage = pageHistory.pop();
+    switchToPage(prevPage);
+  } else {
+    switchToPage('introPage');
+  }
+});
+submitCommentBtn.addEventListener('click', submitNewComment);
+commentInput.addEventListener('keypress', (e) => {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    submitNewComment();
+  }
+});
+    
+     // 阅读页面返回按钮事件（确保正确记录历史）
+backToIntroBtn.addEventListener('click', () => {
+  switchToIntroPage(); // 直接跳转到介绍页（会被switchToPage记录历史）
+});
+
+    charactersBtn.addEventListener('click', switchToCharactersPage);
+
+   // 角色页面返回按钮事件（修改为从历史记录获取上一页）
+backToIntroFromCharactersBtn.addEventListener('click', () => {
+  if (pageHistory.length > 0) {
+    const prevPage = pageHistory.pop(); // 取出上一页
+    switchToPage(prevPage); // 跳转到上一页
+  } else {
+    // 历史记录为空时默认回介绍页
+    switchToPage('introPage');
+  }
+});
+    tocBtn.addEventListener('click', openTocSidebar);
+    closeToc.addEventListener('click', closeTocSidebar);
+    overlay.addEventListener('click', closeTocSidebar);
+  </script>
+</body>
+</html>

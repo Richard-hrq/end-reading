@@ -1,0 +1,149 @@
+{
+    "id": 1,
+    "title": "活着",
+    "author": "余华",
+    "introduction": "《活着》讲述了一个人和他命运之间的友情，这是最为感人的友情，他们互相感激，同时也互相仇恨，他们谁也无法抛弃对方，同时谁也没有理由抱怨对方，《活着》讲述人如何去承受巨大的苦难，就像千钧一发，让一根头发去承受三万斤的重量，它没有断，《活着》讲述了眼泪的丰富和宽广，讲述了绝望的不存在，讲述了人是为了活着本身而活着，而不是为了活着之外的任何事物而活着。",
+    "coverImage": "images/fenmian.jpg",
+    "genre": [
+        "文学","家庭","乡村"
+    ],
+    "status": "完结",
+    "characters": [
+       {
+      "id": 1,
+      "name": "福贵",
+      "role": "主角",
+      "description": "前期纨绔、后期坚韧，对生命有极强的承受力",
+      "avatar": "images/fugui.webp",
+      "relationships": [
+        { "target": 2, "relation": "父子" },
+        { "target": 3, "relation": "夫妻" },
+        { "target": 4, "relation": "父女" },
+        { "target": 5, "relation": "父子" }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "徐老爷",
+      "role": "配角",
+      "description": "传统地主，性格固执但有骨气",
+      "avatar": "images/xulaoye.png",
+      "relationships": [
+        { "target": 1, "relation": "父子" }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "家珍",
+      "role": "配角",
+      "description": "温柔、忠贞、隐忍，典型的传统女性",
+      "avatar": "images/jiazhen.png",
+      "relationships": [
+        { "target": 1, "relation": "夫妻" },
+        { "target": 4, "relation": "母女" },
+        { "target": 5, "relation": "母子" }
+      ]
+    },
+    {
+      "id": 4,
+      "name": "凤霞",
+      "role": "配角",
+      "description": "善良、勤劳、孝顺，命运坎坷",
+      "avatar": "images/fenxiang.png",
+      "relationships": [
+        { "target": 1, "relation": "父女" },
+        { "target": 5, "relation": "姐弟" }
+      ]
+    },
+    {
+      "id": 5,
+      "name": "有庆",
+      "role": "配角",
+      "description": "活泼、懂事、热爱运动",
+      "avatar": "images/youqin.png",
+      "relationships": [
+        { "target": 1, "relation": "父子" },
+        { "target": 5, "relation": "姐弟" }
+      ]
+    },
+    {
+      "id": 6,
+      "name": "二喜",
+      "role": "配角",
+      "description": "老实、本分、对凤霞极好",
+      "avatar": "images/erxi.png",
+      "relationships": [
+        { "target": 4, "relation": "夫妻" }
+      ]
+    },
+    {
+      "id": 7,
+      "name": "苦根",
+      "role": "配角",
+      "description": "天真、懂事，福贵最后的精神寄托",
+      "avatar": "images/kugeng.png",
+      "relationships": [
+        { "target": 1, "relation": "祖孙" },
+        { "target": 6, "relation": "父子" },
+        { "target": 4, "relation": "母子" }
+      ]
+    }
+  ],
+    "chapters": [
+        {
+            "id": 1,
+            "title": "前言",
+            "content": ""
+        },
+        {
+            "id": 2,
+            "title": "第一章",
+            "content": ""
+        },
+        {
+            "id": 3,
+            "title": "第二章",
+            "content": ""
+        },
+        {
+            "id": 4,
+            "title": "第三章",
+            "content": ""
+        },
+        {
+            "id": 5,
+            "title": "第四章",
+            "content": ""
+        },
+        {
+            "id": 6,
+            "title": "第五章",
+            "content": ""
+        },
+        {
+            "id": 7,
+            "title": "第六章",
+            "content": ""
+        },
+        {
+            "id": 8,
+            "title": "第七章",
+            "content": ""
+        },
+        {
+            "id": 9,
+            "title": "第八章",
+            "content": ""
+        },
+        {
+            "id": 10,
+            "title": "第九章",
+            "content": ""
+        },
+        {
+            "id": 11,
+            "title": "第十章",
+            "content": ""
+        }
+    ]
+}
