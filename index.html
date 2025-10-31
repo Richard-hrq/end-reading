@@ -1071,6 +1071,10 @@ function switchLoreTab(tabId) {
 
 // 切换到设定集页面
 function switchToLorePage() {
+  const currentPage = document.querySelector('.page.active')?.id;
+  if (currentPage && currentPage !== 'lorePage') {
+    pageHistory.push(currentPage);
+  }
   switchToPage('lorePage');
   renderLoreContent(); // 渲染内容
 }
@@ -1534,4 +1538,5 @@ backToIntroFromCharactersBtn.addEventListener('click', () => {
   </script>
 </body>
 </html>
+
 
